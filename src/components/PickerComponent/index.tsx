@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {Image, Platform, StyleProp, View, ViewStyle, Text} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import {Image, Platform, StyleProp, Text, View, ViewStyle} from 'react-native';
 import {Styles} from './style';
+import {Picker} from '@react-native-community/picker';
 
 const typedMemo: <T>(c: T) => T = React.memo;
 
@@ -26,7 +27,7 @@ type Props<T> = {
     pickerContainerStyle?: StyleProp<ViewStyle>;
 };
 
-export const PickerComponent = typedMemo(function PickerComponent<T>(props: Props<T>) {
+export const PickerComponentOld = typedMemo(function PickerComponentOld<T>(props: Props<T>) {
     const {onValueChanged: onValueChangedProp, items} = props;
 
     const [selectedItem, setSelectedItem] = useState<Item<T>>(null);
@@ -92,4 +93,30 @@ export const PickerComponent = typedMemo(function PickerComponent<T>(props: Prop
             </View>
         </RNPickerSelect>
     );
+});
+export const PickerComponent = typedMemo(function PickerComponent<T>(props: Props<T>) {
+    const {onValueChanged: onValueChangedProp, items} = props;
+    const [selectedItem, setSelectedItem] = useState<Item<T>>(null);
+    const [selectedItemIndex, setSelectedItemIndex] = useState<number>(null);
+
+
+    const onValueChanged = useCallback((index: number) => {
+
+        setSelectedItem(selectedItem);
+        onValueChangedProp(selectedItem.value, index);
+    }, [selectedItem, onValueChangedProp, items]);
+
+    return (
+        <Picker
+            selectedValue={selectedItem.value}
+            style={Styles.sectionContainer}
+            onValueChange={(itemIndex) => {
+                onValueChanged(itemIndex);
+            }}>
+            {
+                items.map((item) =>
+                    <Picker.Item label={item.label} value={item.value}/>,
+                )
+            }
+        </Picker>);
 });

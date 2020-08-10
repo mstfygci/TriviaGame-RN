@@ -33,7 +33,7 @@ export const TestScreen = memo(function TestScreen() {
             <Text style={Styles.text}>
                 {hour < 0 ? '0' + hour : hour}:{minute < 10 ? '0' + minute : minute}:{second < 10 ? '0' + second : second}
             </Text>
-            <TouchableOpacity style={Styles.clockArea} onPress={() => console.log('sa')}>
+            <TouchableOpacity style={Styles.clockArea}>
                 <ImageBackground
                     style={Styles.clock}
                     source={require('./images/clock1.png')}>

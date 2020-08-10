@@ -20,6 +20,14 @@ export const Styles = StyleSheet.create({
         width: 300 * rx,
         marginVertical: 10 * rx,
     },
+    picker: {
+        alignItems: 'center',
+        width: '100%',
+        height: 45 * rx,
+        paddingHorizontal: 13 * rx,
+        backgroundColor: 'white',
+        borderRadius: 15 * rx,
+    },
     titleTextArea: {
         height: 100 * rx,
     },

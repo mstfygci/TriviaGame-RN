@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native';
 import {Styles} from './style';
-import {PickerComponent} from '../../components/SelectComponent';
+import {PickerComponent, PickerComponentOld} from '../../components/PickerComponent';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {GlobalState} from '../../store/state';
@@ -16,6 +16,8 @@ import {getQuestionApi} from '../../api/request';
 import {setJokerUsedAction, setQuestionListAction, setSelectedChoiceAction} from '../../store/game/action';
 import {changeBusyAction} from '../../store/ui/action';
 import {Difficulty} from '../../store/game/state';
+import {Picker} from '@react-native-community/picker';
+import {rx} from '../../utils/dimensions';
 
 const difficultyList: { label: string, value: string }[] = [
     {label: 'Easy', value: 'easy'},
@@ -97,19 +99,27 @@ export const MainScreen = memo(function MainScreen() {
                         </Text>
                     </View>
                     <View style={Styles.pickerContainer}>
-                        <PickerComponent
+                        <PickerComponentOld
                             items={pickerCategoryList}
                             onValueChanged={setSelectedCategory}
                             value={selectedCategory}
                             placeholder='Any Category'
                         />
                     </View>
+
                     <View style={Styles.pickerContainer}>
-                        <PickerComponent
-                            items={difficultyList}
-                            onValueChanged={setSelectedDifficulty}
-                            value={selectedDifficulty}
-                            placeholder='Any Difficult'/>
+                        <Picker
+                            selectedValue={selectedDifficulty}
+                            style={Styles.picker}
+                            onValueChange={(itemValue, itemIndex) => {
+                                setSelectedDifficulty(itemValue.toString());
+                            }}>
+                            {
+                                difficultyList.map((item) =>
+                                    <Picker.Item label={item.label} value={item.value}/>,
+                                )
+                            }
+                        </Picker>
                     </View>
                     <TouchableOpacity
                         style={Styles.buttonTouchableArea}
